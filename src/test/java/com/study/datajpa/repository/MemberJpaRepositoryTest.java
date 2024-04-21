@@ -1,7 +1,6 @@
 package com.study.datajpa.repository;
 
 import com.study.datajpa.entity.Member;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -23,7 +21,7 @@ class MemberJpaRepositoryTest {
     public void testMember() throws Exception {
         //given
         Member member = Member.builder()
-                .userName("memberA")
+                .username("memberA")
                 .build();
         Member savedMember = memberJpaRepository.save(member);
 
@@ -32,7 +30,7 @@ class MemberJpaRepositoryTest {
 
         //then
         assertThat(findMember.getId()).isEqualTo(member.getId());
-        assertThat(findMember.getUserName()).isEqualTo(member.getUserName());
+        assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
         assertThat(findMember).isEqualTo(member);
      }
 
@@ -40,10 +38,10 @@ class MemberJpaRepositoryTest {
      public void basicCRUD() throws Exception {
          //given
          Member member1 = Member.builder()
-                 .userName("member1")
+                 .username("member1")
                  .build();
          Member member2 = Member.builder()
-                 .userName("member2")
+                 .username("member2")
                  .build();
          memberJpaRepository.save(member1);
          memberJpaRepository.save(member2);
@@ -78,11 +76,11 @@ class MemberJpaRepositoryTest {
      public void testFindByUserNameAndAgeGreaterThan() throws Exception {
          //given
          Member member1 = Member.builder()
-                 .userName("AAA")
+                 .username("AAA")
                  .age(15)
                  .build();
          Member member2 = Member.builder()
-                 .userName("AAA")
+                 .username("AAA")
                  .age(20)
                  .build();
          memberJpaRepository.save(member1);
@@ -92,7 +90,13 @@ class MemberJpaRepositoryTest {
 
 
          //then
-         assertThat(list.get(0).getUserName()).isEqualTo("AAA");
+         assertThat(list.get(0).getUsername()).isEqualTo("AAA");
          assertThat(list.get(0).getAge()).isEqualTo(20);
+      }
+
+
+      @Test
+      public void namedQueryTest() throws Exception {
+          List<Member> list = memberJpaRepository.findByUsername("aaa");
       }
 }

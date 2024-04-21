@@ -34,19 +34,19 @@ class MemberTest {
         em.persist(teamB);
         Member member1 = Member.builder()
                 .age(10)
-                .userName("member1")
+                .username("member1")
                 .build();
         Member member2 = Member.builder()
                 .age(10)
-                .userName("member1")
+                .username("member1")
                 .build();
         Member member3 = Member.builder()
                 .age(10)
-                .userName("member1")
+                .username("member1")
                 .build();
         Member member4 = Member.builder()
                 .age(10)
-                .userName("member1")
+                .username("member1")
                 .build();
         member1.changeTeam(teamA);
         member2.changeTeam(teamA);

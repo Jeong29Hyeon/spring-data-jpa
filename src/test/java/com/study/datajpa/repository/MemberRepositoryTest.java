@@ -22,7 +22,7 @@ public class MemberRepositoryTest {
     public void testMember() throws Exception {
         //given
         Member member = Member.builder()
-                .userName("memberA")
+                .username("memberA")
                 .build();
         Member savedMember = memberRepository.save(member);
 
@@ -31,7 +31,7 @@ public class MemberRepositoryTest {
 
         //then
         assertThat(findMember.getId()).isEqualTo(member.getId());
-        assertThat(findMember.getUserName()).isEqualTo(member.getUserName());
+        assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
         assertThat(findMember).isEqualTo(member);
      }
 
@@ -39,10 +39,10 @@ public class MemberRepositoryTest {
     public void basicCRUD() throws Exception {
         //given
         Member member1 = Member.builder()
-                .userName("member1")
+                .username("member1")
                 .build();
         Member member2 = Member.builder()
-                .userName("member2")
+                .username("member2")
                 .build();
         memberRepository.save(member1);
         memberRepository.save(member2);
@@ -77,21 +77,40 @@ public class MemberRepositoryTest {
     public void testFindByUserNameAndAgeGreaterThan() throws Exception {
         //given
         Member member1 = Member.builder()
-                .userName("AAA")
+                .username("AAA")
                 .age(15)
                 .build();
         Member member2 = Member.builder()
-                .userName("AAA")
+                .username("AAA")
                 .age(20)
                 .build();
         memberRepository.save(member1);
         memberRepository.save(member2);
         //when
-        List<Member> list = memberRepository.findByUserNameAndAgeGreaterThan("AAA", 19);
+        List<Member> list = memberRepository.findByUsernameAndAgeGreaterThan("AAA", 19);
 
 
         //then
-        assertThat(list.get(0).getUserName()).isEqualTo("AAA");
+        assertThat(list.get(0).getUsername()).isEqualTo("AAA");
         assertThat(list.get(0).getAge()).isEqualTo(20);
     }
+
+    @Test
+    public void testQuery() throws Exception {
+        //given
+        Member member1 = Member.builder()
+                .username("AAA")
+                .age(15)
+                .build();
+        Member member2 = Member.builder()
+                .username("AAA")
+                .age(20)
+                .build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        //when
+        memberRepository.findUser("AAA");
+
+        //then
+     }
 }
