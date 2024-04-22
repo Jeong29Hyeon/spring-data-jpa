@@ -99,4 +99,27 @@ class MemberJpaRepositoryTest {
       public void namedQueryTest() throws Exception {
           List<Member> list = memberJpaRepository.findByUsername("aaa");
       }
+
+      @Test
+      public void paging_test() throws Exception {
+          //given
+          memberJpaRepository.save(Member.builder().username("member1").age(10).build());
+          memberJpaRepository.save(Member.builder().username("member2").age(10).build());
+          memberJpaRepository.save(Member.builder().username("member3").age(10).build());
+          memberJpaRepository.save(Member.builder().username("member4").age(10).build());
+          memberJpaRepository.save(Member.builder().username("member5").age(10).build());
+          memberJpaRepository.save(Member.builder().username("member6").age(10).build());
+          memberJpaRepository.save(Member.builder().username("member7").age(10).build());
+          memberJpaRepository.save(Member.builder().username("member8").age(10).build());
+          memberJpaRepository.save(Member.builder().username("member9").age(10).build());
+          memberJpaRepository.save(Member.builder().username("member10").age(10).build());
+          //when
+
+          List<Member> members = memberJpaRepository.findByPage(10, 0, 5);
+          long totalCount = memberJpaRepository.totalCount(10);
+
+          //then
+          assertThat(members.size()).isEqualTo(5);
+          assertThat(totalCount).isEqualTo(10);
+       }
 }

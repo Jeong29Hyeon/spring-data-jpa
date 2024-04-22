@@ -10,6 +10,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -186,4 +187,29 @@ public class MemberRepositoryTest {
 
            //then
         }
+
+
+        @Test
+        public void returnType_test() throws Exception {
+            //given
+            Member member1 = Member.builder()
+                    .username("AAA")
+                    .age(15)
+                    .build();
+            Member member2 = Member.builder()
+                    .username("BBB")
+                    .age(20)
+                    .build();
+            memberRepository.save(member1);
+            memberRepository.save(member2);
+            //when
+
+            List<Member> list = memberRepository.findListByUsername("AAA");
+            Member findMember = memberRepository.findMemberByUsername("AAA");
+            Optional<Member> findOptional = memberRepository.findOptionalByUsername("AAA");
+
+
+
+            //then
+         }
 }
