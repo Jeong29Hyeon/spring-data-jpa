@@ -3,6 +3,8 @@ package com.study.datajpa.repository;
 import com.study.datajpa.dto.MemberDto;
 import com.study.datajpa.entity.Member;
 import com.study.datajpa.entity.Team;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +29,9 @@ public class MemberRepositoryTest {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     public void testMember() throws Exception {
@@ -248,4 +253,26 @@ public class MemberRepositoryTest {
         assertThat(slice.hasNext()).isTrue();
         assertThat(slice.isFirst()).isTrue();
     }
+
+    @Test
+    public void bulkUpdate_Test() throws Exception {
+        //given
+        memberRepository.save(Member.builder().username("member1").age(10).build());
+        memberRepository.save(Member.builder().username("member2").age(18).build());
+        memberRepository.save(Member.builder().username("member3").age(20).build());
+        memberRepository.save(Member.builder().username("member4").age(25).build());
+        memberRepository.save(Member.builder().username("member5").age(70).build());
+        //when
+
+        int updateCount = memberRepository.bulkAgePlus(20);
+
+        // @Modifying 옵션으로 clear 제공
+//        em.clear();
+
+        List<Member> list = memberRepository.findByUsername("member5");
+        Member member5 = list.get(0);
+        System.out.println("member5 = " + member5);
+        //then
+        assertThat(updateCount).isEqualTo(3);
+     }
 }
