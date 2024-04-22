@@ -2,6 +2,9 @@ package com.study.datajpa.repository;
 
 import com.study.datajpa.dto.MemberDto;
 import com.study.datajpa.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +32,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findListByUsername(String username); //리스트로
     Member findMemberByUsername(String username); //그냥 Member 단건
     Optional<Member> findOptionalByUsername(String username); //Optional 단건
+
+    //Page 이용
+    @Query(value = "select m from Member m left join fetch m.team t",
+    countQuery = "select count(m) from Member m")
+    Page<Member> findByAge(int age, Pageable pageable);
+
+    //Slice 이용
+    Slice<Member> findByAgeGreaterThan(int age, Pageable pageable);
 }
