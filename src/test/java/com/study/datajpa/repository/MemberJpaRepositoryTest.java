@@ -122,4 +122,20 @@ class MemberJpaRepositoryTest {
           assertThat(members.size()).isEqualTo(5);
           assertThat(totalCount).isEqualTo(10);
        }
+
+       @Test
+       public void bulkUpdate_test() throws Exception {
+           //given
+           memberJpaRepository.save(Member.builder().username("member1").age(10).build());
+           memberJpaRepository.save(Member.builder().username("member2").age(19).build());
+           memberJpaRepository.save(Member.builder().username("member3").age(20).build());
+           memberJpaRepository.save(Member.builder().username("member4").age(21).build());
+           memberJpaRepository.save(Member.builder().username("member5").age(40).build());
+
+           //when
+           int resultCount = memberJpaRepository.bulkAgePlus(20);
+           assertThat(resultCount).isEqualTo(3);
+
+           //then
+        }
 }
