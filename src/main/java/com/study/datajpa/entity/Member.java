@@ -3,6 +3,7 @@ package com.study.datajpa.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter @Setter
@@ -16,7 +17,7 @@ import org.hibernate.annotations.DynamicUpdate;
         name="Member.all",
         attributeNodes = @NamedAttributeNode("team")
 )
-public class Member {
+public class Member extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
