@@ -275,4 +275,62 @@ public class MemberRepositoryTest {
         //then
         assertThat(updateCount).isEqualTo(3);
      }
+
+    @Test
+    public void findMemberLazy() throws Exception {
+        //given
+        // member 1 -> team A
+        // member 2 -> team B
+        Team teamA = Team.builder().name("teamA").build();
+        Team teamB = Team.builder().name("teamB").build();
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member member1 = Member.builder().age(10).username("member1").build();
+        Member member2 = Member.builder().age(10).username("member2").build();
+        member1.changeTeam(teamA);
+        member2.changeTeam(teamB);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+        //when
+        List<Member> members = memberRepository.findEntityGraphByUsername("member1");
+        for (Member member : members) {
+            System.out.println("member.getUsername() = " + member.getUsername());
+            System.out.println("member.getTeam().getName() = " + member.getTeam().getName());
+        }
+    }
+
+    @Test
+    public void queryHint() throws Exception {
+        //given
+        Member member1 = Member.builder().username("member1").build();
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+        //when
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2");
+        em.flush();
+
+        //then
+     }
+
+    @Test
+    public void lock() throws Exception {
+        //given
+        Member member1 = Member.builder().username("member1").build();
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        //when
+        List<Member> list = memberRepository.findLockByUsername("member1");
+        em.flush();
+
+        //then
+    }
+
 }
