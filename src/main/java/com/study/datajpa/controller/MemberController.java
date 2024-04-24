@@ -37,7 +37,7 @@ public class MemberController {
                 .map(member -> new MemberDto(member.getId(), member.getUsername(), null));
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         List<Member> list = IntStream.range(0,100)
                 .mapToObj(i -> Member.builder().username("member" + i).build())
